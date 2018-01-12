@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:component-scan base-package="com"/>
+    <context:annotation-config/>
+
+    <tx:annotation-driven transaction-manager="txManager"/>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <bean id="categoryDAO" class="com.DAO.DAOImplementation" >
+        <constructor-arg value="com.object.Category"/>
+    </bean>
+
+    <bean id="orderDAO" class="com.DAO.DAOImplementation" >
+        <constructor-arg value="com.object.Order"/>
+    </bean>
+
+    <bean id="productDAO" class="com.DAO.DAOImplementation" >
+        <constructor-arg value="com.object.Product"/>
+    </bean>
+
+    <bean id="userDAO" class="com.DAO.DAOImplementation" >
+        <constructor-arg value="com.object.User"/>
+    </bean>
+
+    <bean id="roleDAO" class="com.DAO.DAOImplementation" >
+        <constructor-arg value="com.object.Role"/>
+    </bean>
+
+    <bean id="cartDAO" class="com.DAO.DAOImplementation" >
+        <constructor-arg value="com.object.Cart"/>
+    </bean>
+
+    <bean id="cartProductDAO" class="com.DAO.DAOImplementation" >
+        <constructor-arg value="com.object.CartProduct"/>
+    </bean>
+
+    <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/shop"/>
+        <property name="username" value="root"/>
+        <property name="password" value="lionheart12"/>
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="show_sql">true</prop>
+                <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+            </props>
+        </property>
+        <property name="packagesToScan">
+            <list>
+                <value>com.object</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>
